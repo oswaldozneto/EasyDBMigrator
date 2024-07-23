@@ -130,6 +130,7 @@ begin
     Runner.PG.ExecuteAdHocQuery('DROP TABLE IF EXISTS public.tbinvoices');
   end
   ));
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TForm2.btnDowngradeDatabaseClick(Sender: TObject);

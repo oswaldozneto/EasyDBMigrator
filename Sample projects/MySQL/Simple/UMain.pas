@@ -105,6 +105,7 @@ begin
     Runner.MySQL.ExecuteAdHocQuery('DROP TABLE TbCustomers');
   end
   ));
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TfrmMain.btnDowngradeDatabaseClick(Sender: TObject);

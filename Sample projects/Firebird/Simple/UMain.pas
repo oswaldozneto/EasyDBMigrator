@@ -122,6 +122,7 @@ begin
     end;
   end
   ));
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TfrmMain.btnDowngradeDatabaseClick(Sender: TObject);

@@ -7,6 +7,7 @@
 unit EasyDB.ORM;
 
 interface
+
 uses
   Data.FmtBcd, Data.SqlTimSt, System.Generics.Collections,
   EasyDB.ORM.Core;
@@ -328,17 +329,10 @@ type
     property ObjectType: TObjectType read FObjectType;
   end;
 
-  TORM = class  //Singleton
-  private
-    class var FInstance: TORM;
-    FTarget: TTargetType;
-    FCreateList: TObjectList<TCreate>;
-    FAlterList: TObjectList<TAlter>;
-    FDeleteList: TList<TDelete>;
-    constructor NewORM;
-  public
-    class function GetInstance(ATarget: TTargetType): TORM;
-    destructor Destroy; override;
+  IORM = interface
+  end;
+
+  IInternalORM = interface(IORM)
     function Create: TCreate;
     function Alter: TAlter;
     function Delete: TDelete;
@@ -347,10 +341,35 @@ type
 
     function GetCreateList: TObjectList<TCreate>;
     function GetAlterList: TObjectList<TAlter>;
-    function GetDeletes: TList<TDelete>;
+    function GetDeletes: TObjectList<TDelete>;
+  end;
+
+  TORM = class(TInterfacedObject, IInternalORM)  //Singleton
+  private
+    class var FInstance: TORM;
+    FTarget: TTargetType;
+    FCreateList: TObjectList<TCreate>;
+    FAlterList: TObjectList<TAlter>;
+    FDeleteList: TObjectList<TDelete>;
+    constructor NewORM;
+  public
+    class function GetInstance(ATarget: TTargetType): TORM;
+    destructor Destroy; override;
+
+    {IInternalORM}
+    function Create: TCreate;
+    function Alter: TAlter;
+    function Delete: TDelete;
+    procedure SubmitChanges;
+    function GetTarget: TTargetType;
+
+    function GetCreateList: TObjectList<TCreate>;
+    function GetAlterList: TObjectList<TAlter>;
+    function GetDeletes: TObjectList<TDelete>;
   end;
 
 implementation
+
 uses
   EasyDB.ORM.Builder;
 
@@ -381,7 +400,7 @@ begin
   Result := FCreateList;
 end;
 
-function TORM.GetDeletes: TList<TDelete>;
+function TORM.GetDeletes: TObjectList<TDelete>;
 begin
   Result := FDeleteList;
 end;

@@ -49,11 +49,10 @@ implementation
 
 procedure TForm1.btnAddMigrationsClick(Sender: TObject);
 var
-  ORM: TORM;
+  ORM: IInternalORM;
 begin
   Runner.Clear;
   ORM := TORM.GetInstance(ttMySQL);
-  Runner.ORM := ORM;
 
   Runner.Add(TMigration.Create('TbUsers', 202301010001, 'Ali', 'Created table Users(#2701)',
   procedure
@@ -160,6 +159,7 @@ begin
     ORM.SubmitChanges;
   end
   ));
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TForm1.btnDowngradeDatabaseClick(Sender: TObject);

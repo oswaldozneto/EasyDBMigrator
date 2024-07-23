@@ -50,7 +50,7 @@ implementation
 
 procedure TfrmMain.btnAddMigrationsClick(Sender: TObject);
 begin
-  //Modern way
+  //Modern/Vertical way
   Runner.Clear
   .Add(TUsersMgr_202301010001.Create)
   .Add(TUsersMgr_202301010002.Create)
@@ -73,6 +73,7 @@ begin
   Runner.MigrationList.Add(TInvoicesMgr_202301010005.Create);
   Runner.MigrationList.Add(TInvoicesMgr_202301010010.Create);
 }
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TfrmMain.btnDowngradeDatabaseClick(Sender: TObject);

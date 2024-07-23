@@ -71,6 +71,7 @@ begin
   Runner.MigrationList.Add(TInvoicesMgr_202301010005.Create);
   Runner.MigrationList.Add(TInvoicesMgr_202301010010.Create);
 }
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TfrmMain.btnDowngradeDatabaseClick(Sender: TObject);

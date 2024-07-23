@@ -112,6 +112,8 @@ begin
     Runner.SQL.ExecuteAdHocQuery('DROP TABLE TbCustomers');
   end
   ));
+
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TfrmMain.btnDowngradeDatabaseClick(Sender: TObject);
@@ -143,7 +145,6 @@ begin
     DatabaseName := 'Library';
     Schema := 'dbo';
   end;
-
 {
  Method 1
    TLogger.Instance.OnLog := OnLog;

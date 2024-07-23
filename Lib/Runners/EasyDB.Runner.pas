@@ -16,8 +16,7 @@ uses
   EasyDB.Logger,
   EasyDB.Migration,
   EasyDB.MigrationX,
-  EasyDB.Attribute,
-  EasyDB.ORM;
+  EasyDB.Attribute;
 
 type
   TObjListHelper = class helper for TMigrations
@@ -32,7 +31,6 @@ type
     FConfig: TConfig;
     FLogger: TLogger;
     FVersionToDowngrade: Int64;
-    FOrm: TORM;
     FLastPct: Integer;
     FCurrPct: Integer;
 
@@ -66,7 +64,7 @@ type
     property MigrationList: TMigrations read FMigrationList write FMigrationList;
     property Config: TConfig read FConfig;
     property Logger: TLogger read GetLogger;
-    property ORM: TORM read FOrm write FOrm;
+    //property ORM: IORMBase read FOrm write FOrm;
   end;
 
 implementation
@@ -81,7 +79,6 @@ end;
 
 constructor TRunner.Create;
 begin
-  FOrm := nil;
   FVersionToDowngrade := 0;
   FConfig := TConfig.Create;
   FMigrationList := TMigrations.Create;
@@ -113,10 +110,6 @@ begin
   FreeAndNil(FMigrationList);
   FreeAndNil(FLogger);
   FreeAndNil(FConfig);
-
-  if Assigned(FOrm) then
-    FreeAndNil(FOrm);
-
   inherited;
 end;
 

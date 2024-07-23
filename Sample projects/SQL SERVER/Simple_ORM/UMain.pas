@@ -51,14 +51,11 @@ implementation
 
 procedure TForm1.btnAddMigrationsClick(Sender: TObject);
 var
-  ORM: TORM;
+  ORM: IInternalORM; //here you can use any other ORMs, there is no dependency to the ORM object!
 begin
   InitializeRunner;
-  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
-
   Runner.Clear;
   ORM := TORM.GetInstance(ttSQLServer);
-  Runner.ORM := ORM;
 
   Runner.Add(TMigration.Create('TbUsers', 202301010001, 'Ali', 'Created table Users(#2701)',
   procedure
@@ -166,13 +163,14 @@ begin
     ORM.SubmitChanges;
   end
   ));
+  TLogger.Instance.Log(atUpgrade, 'Migrations have been added');
 end;
 
 procedure TForm1.btnCreateDBClick(Sender: TObject);
 var
   LvConnectionParams: TSqlConnectionParams;
   LvRunner: TSQLRunner;
-  ORM: TORM;
+  ORM: IInternalORM;
 begin
   with LvConnectionParams do // The information can be sourced from an ini file, registry or other location.
   begin
@@ -196,7 +194,6 @@ begin
   try
     LvRunner.Clear;
     ORM := TORM.GetInstance(ttSQLServer);
-    LvRunner.ORM := ORM;
 
     LvRunner.Add(TMigration.Create('Library DB', 202301010000, 'GodAdmin!', 'Created the Database',
     procedure
